@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Backup Long-Open Tabs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .popup-container {
+      width: 320px;
+      padding: 16px;
+      background: var(--surface);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .popup-header {
+      text-align: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--primary-2);
+    }
+    .popup-header h1 {
+      margin: 0 0 4px 0;
+      font-size: 1.2rem;
+      color: var(--primary-1);
+    }
+    .popup-header p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .stats-section {
+      background: var(--background);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .stat-row:last-child {
+      margin-bottom: 0;
+    }
+    .stat-label {
+      font-weight: 500;
+      color: var(--foreground);
+    }
+    .stat-value {
+      font-weight: 600;
+      color: var(--primary-1);
+    }
+    .status {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .status.enabled {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.disabled {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .auto-backup-info {
+      background: var(--surface);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border-left: 3px solid var(--primary-1);
+    }
+    .auto-backup-info h3 {
+      margin: 0 0 8px 0;
+      font-size: 1rem;
+      color: var(--primary-1);
+    }
+    .auto-backup-info p {
+      margin: 0 0 4px 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <h1>Backup Long-Open Tabs</h1>
+      <p>Track and backup tabs open for 7+ days</p>
+    </div>
+    
+    <!-- Statistics Section -->
+    <div class="stats-section">
+      <div class="stat-row">
+        <span class="stat-label">Tracked tabs:</span>
+        <span class="stat-value" id="tabCount">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Auto backup:</span>
+        <span class="status" id="autoBackupStatus">Disabled</span>
+      </div>
+    </div>
+    
+    <!-- Automatic Backup Info -->
+    <div class="auto-backup-info" id="autoBackupInfo" style="display: none;">
+      <h3>Automatic Backup</h3>
+      <div class="stat-row">
+        <span class="stat-label">Last backup:</span>
+        <span class="stat-value" id="lastBackup">Never</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Next backup:</span>
+        <span class="stat-value" id="nextBackup">Not scheduled</span>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-green" id="backupBtn"><span class="gradient-text">Backup Now</span></button>
+      <button class="btn btn-green" id="tabLogBtn"><span class="gradient-text">View Tab Log</span></button>
+      <button class="btn btn-green" id="settingsBtn"><span class="gradient-text">Settings</span></button>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 

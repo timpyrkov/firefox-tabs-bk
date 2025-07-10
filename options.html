@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Settings - Backup Long-Open Tabs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .options-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .option-group {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .option-group h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: var(--primary-1);
+      border-bottom: 2px solid var(--primary-2);
+      padding-bottom: 8px;
+    }
+    .option-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 8px 0;
+    }
+    .option-row label {
+      font-weight: 500;
+      color: var(--foreground);
+    }
+    .option-row input[type="number"],
+    .option-row input[type="time"],
+    .option-row select {
+      padding: 6px 8px;
+      border: 1px solid var(--input-border);
+      border-radius: 4px;
+      background: var(--input-bg);
+      color: var(--foreground);
+      min-width: 100px;
+    }
+    .option-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      margin-left: 0;
+    }
+    .status-message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .status-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .status-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .time-interval-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-interval-row input {
+      flex: 1;
+    }
+    @media (max-width: 600px) {
+      .option-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .time-interval-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="options-container">
+    <h1>Backup Long-Open Tabs Settings</h1>
+    
+    <!-- Basic Settings -->
+    <div class="option-group">
+      <h3>Basic Settings</h3>
+      
+      <div class="option-row">
+        <label for="minDays">Minimum days before backup:</label>
+        <input type="number" id="minDays" min="1" max="365" value="7">
+      </div>
+      <div class="option-description">
+        Tabs open for this many days or more will be backed up
+      </div>
+      
+      <div class="option-row">
+        <label for="maxTabs">Maximum tabs to backup:</label>
+        <input type="number" id="maxTabs" min="1" max="1000" value="100">
+      </div>
+      <div class="option-description">
+        Limit the number of tabs backed up to prevent storage issues
+      </div>
+    </div>
+    
+    <!-- Automatic Backup Settings -->
+    <div class="option-group">
+      <h3>Automatic Backup</h3>
+      
+      <div class="option-row">
+        <label for="autoBackupEnabled">Enable automatic backups:</label>
+        <input type="checkbox" id="autoBackupEnabled">
+      </div>
+      <div class="option-description">
+        Automatically backup tabs at scheduled intervals
+      </div>
+      
+      <div class="option-row">
+        <label for="backupTime">Backup time:</label>
+        <input type="time" id="backupTime" value="05:00">
+      </div>
+      <div class="option-description">
+        Time of day to perform automatic backups (24-hour format)
+      </div>
+      
+      <div class="option-row backup-days-row-wrapper">
+        <label style="align-self: flex-start;">Auto-backup days:</label>
+        <div class="backup-days-row" id="backupDays">
+          <label><input type="checkbox" class="backup-day" value="Mon" checked>Mon</label>
+          <label><input type="checkbox" class="backup-day" value="Tue">Tue</label>
+          <label><input type="checkbox" class="backup-day" value="Wed">Wed</label>
+          <label><input type="checkbox" class="backup-day" value="Thu">Thu</label>
+          <label><input type="checkbox" class="backup-day" value="Fri">Fri</label>
+          <label><input type="checkbox" class="backup-day" value="Sat">Sat</label>
+          <label><input type="checkbox" class="backup-day" value="Sun">Sun</label>
+        </div>
+      </div>
+      <div class="option-description">
+        Select which days of the week to run automatic backups (default: Monday)
+      </div>
+      
+      <div class="option-row">
+        <label for="toleranceHours">Tolerance (hours):</label>
+        <input type="number" id="toleranceHours" min="1" max="24" value="12">
+      </div>
+      <div class="option-description">
+        Time tolerance to handle daylight saving time changes
+      </div>
+    </div>
+    
+    <!-- Advanced Settings -->
+    <div class="option-group">
+      <h3>Advanced Settings</h3>
+      
+      <div class="option-row">
+        <label for="excludePrivate">Exclude private browsing tabs:</label>
+        <input type="checkbox" id="excludePrivate" checked>
+      </div>
+      <div class="option-description">
+        Don't backup tabs from private/incognito windows
+      </div>
+      
+      <div class="option-row">
+        <label for="excludePinned">Exclude pinned tabs:</label>
+        <input type="checkbox" id="excludePinned">
+      </div>
+      <div class="option-description">
+        Don't backup pinned tabs (they're usually important)
+      </div>
+      
+      <div class="option-row">
+        <label for="maxTitleLength">Maximum title length:</label>
+        <input type="number" id="maxTitleLength" min="10" max="500" value="100">
+      </div>
+      <div class="option-description">
+        Truncate long tab titles to save storage space
+      </div>
+    </div>
+    
+    <!-- Theme Settings -->
+    <div class="option-group">
+      <h3>Appearance</h3>
+      
+      <div class="option-row">
+        <label for="theme">Theme:</label>
+        <select id="theme">
+          <option value="auto">Auto (follow system)</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="option-description">
+        Choose your preferred theme
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 12px; align-items: center; margin-top: 16px;">
+      <button class="btn btn-green" id="saveBtn"><span class="gradient-text">Save Settings</span></button>
+      <button class="btn btn-green" id="resetBtn"><span class="gradient-text">Reset to Defaults</span></button>
+    </div>
+    <div id="statusMessage"></div>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html> 

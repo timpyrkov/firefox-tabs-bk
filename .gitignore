@@ -1,24 +1,27 @@
-# Compiled class file
-*.class
+# macOS system files
+.DS_Store
 
-# Log file
+# Node modules (if you ever add npm scripts/tools)
+node_modules/
+
+# Build output (if you add a build step)
+dist/
+build/
+
+# Logs
 *.log
 
-# BlueJ files
-*.ctxt
+# OS/Editor files
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
+# Ignore packaged zips (if you export for store upload)
 *.zip
-*.tar.gz
-*.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# Ignore local dev/test files
+*.local
+.env
+.env.*

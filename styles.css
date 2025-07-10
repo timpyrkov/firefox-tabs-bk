@@ -1,0 +1,751 @@
+/* =========================================================================
+   COLOR PALETTES & UTILITIES
+============================================================================ */
+:root {
+  --primary-1: #bcdd00;
+  --primary-2: #88a000;
+  --primary-3: #546300;
+  --accent-1: #ffbb3d;
+  --accent-2: #ffa500;
+  --accent-3: #c27d00;
+  --background: #181a20;
+  --surface: #23242a;
+  --border: #2a2c32;
+  --shadow: 0 2px 8px rgba(0,0,0,0.25);
+  --foreground: #e6e6e6;
+  --text-secondary: #b0b8c5;
+  --input-bg: #23242a;
+  --input-border: #35373e;
+  --input-focus: var(--primary-1);
+  --success: #88a000;
+  --error: #ffa500;
+  --warning: var(--accent-2);
+  --info: var(--primary-2);
+  /* Gold checkbox variants */
+  --gold-light: #ffd700;
+  --gold-medium: #ffa500;
+  --gold-dark: #daa520;
+  --gold-darker: #b8860b;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #f9f9fb;
+    --surface: #fff;
+    --border: #e0e0e6;
+    --foreground: #222;
+    --text-secondary: #5a5a6e;
+    --input-bg: #fff;
+    --input-border: #b0b8c5;
+  }
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary-1), var(--primary-2), var(--primary-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+.gradient-text-accent {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =========================================================================
+   SECTION HEADERS WITH GOLD GRADIENT
+============================================================================ */
+.option-group h3 {
+  background: linear-gradient(60deg, var(--primary-1), var(--primary-2), var(--primary-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.option-row.backup-days-row-wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+
+
+
+
+/* =========================================================================
+   Tab table checkboxes: neutral border, single dark checkmark
+============================================================================ */
+.tab-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0 4px;
+  border-radius: 5px;
+  border: none !important;
+  background: transparent;
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.tab-checkbox-logged {
+  background: #88A000 !important;
+}
+.tab-checkbox-not-logged {
+  background: #FFA500 !important;
+}
+.tab-checkbox:checked {
+  /* Optionally, slightly darken the background when checked */
+  filter: brightness(0.92);
+}
+.tab-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #111;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: none;
+}
+.tab-checkbox:focus {
+  box-shadow: 0 0 0 2px #bcdd0055;
+} 
+
+
+/* =========================================================================
+   GOLD-THEMED CHECKBOX STYLES
+============================================================================ */
+/* Custom checkbox appearance */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gold-medium);
+  border-radius: 4px;
+  background: var(--surface);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+/* Checked state - Gold fill */
+input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-medium));
+  border-color: var(--gold-dark);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+/* Checkmark for checked state */
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #111;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Hover state */
+input[type="checkbox"]:hover {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.2);
+}
+
+/* Focus state */
+input[type="checkbox"]:focus {
+  outline: none;
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+/* Disabled state */
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================================
+   IMPROVED BACKUP DAYS LAYOUT
+============================================================================ */
+.backup-days-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 8px 0;
+}
+
+.backup-days-row label {
+  display: flex;
+  align-items: center;
+  min-width: 52px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.backup-days-row label:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+/* =========================================================================
+   BUTTON STYLES (ALL BUTTONS TOGETHER)
+============================================================================ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1.5px solid var(--primary-1);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-width 0.15s, background 0.15s, border-color 0.15s;
+  box-shadow: none;
+  position: relative;
+  text-decoration: none;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn:hover, .btn:focus {
+  border-width: 2px;
+  background: #181a20cc;
+}
+.btn-green {
+  border: 2px solid var(--primary-2);
+}
+.btn-green:hover, .btn-green:focus {
+  outline: 3px solid var(--primary-1); /* Outline instead of border */
+  outline-offset: -1px; /* Optional: Pull the outline slightly inside for a "border-like" look */
+}
+.btn-green .gradient-text {
+  background: linear-gradient(60deg, var(--primary-2), var(--primary-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+.btn-yellow {
+  border: 2px solid var(--accent-2);
+}
+.btn-yellow:hover, .btn-yellow:focus {
+  outline: 3px solid var(--accent-1); /* Outline instead of border */
+  outline-offset: -1px; /* Optional: Pull the outline slightly inside for a "border-like" look */
+}
+.btn-yellow .gradient-text {
+  background: linear-gradient(60deg, var(--accent-2), var(--accent-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+.btn-grey {
+  border: 2px solid #888;
+}
+.btn-grey:hover, .btn-grey:focus {
+  outline: 3px solid #aaa; /* Outline instead of border */
+  outline-offset: -1px; /* Optional: Pull the outline slightly inside for a "border-like" look */
+}
+.btn-grey .gradient-text {
+  background: linear-gradient(60deg, #bbb, #eee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+
+/* =========================================================================
+   BASE STYLES, PANELS, ETC.
+============================================================================ */
+/* --------------------
+   CSS RESET & BASE STYLES
+   -------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+/* --------------------
+   POPUP WINDOW STYLES
+   -------------------- */
+.popup-container {
+  width: 320px;
+  min-height: 400px;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.popup-header {
+  /* Primary gradient background */
+  background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 60%, var(--primary-3) 100%);
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+.popup-header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  margin: 0 4px;
+  vertical-align: middle;
+  border: 1.5px solid #444;
+  box-sizing: border-box;
+}
+.status-logged {
+  background: #88A000; /* Lightened Olive */
+}
+.status-not-logged {
+  background: #FFA500; /* Gold */
+}
+/* Custom styled checkbox for log status */
+.log-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0 4px;
+  border-radius: 5px;
+  border: 1.5px solid #444;
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.log-checkbox-logged {
+  background: #88A000 !important;
+}
+.log-checkbox-not-logged {
+  background: #FFA500 !important;
+}
+.log-checkbox:checked::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 4px;
+  top: 1.5px;
+  width: 6px;
+  height: 11px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+.log-checkbox:focus {
+  box-shadow: 0 0 0 2px #1e90ff55;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.status-dot.status-active {
+  background: linear-gradient(135deg, var(--primary-2), var(--primary-1));
+}
+
+.status-dot.status-error {
+  background: var(--error);
+}
+
+.status-dot.status-backing-up {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.popup-content {
+  padding: 16px;
+}
+
+.stats-section {
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 60%, var(--primary-3) 100%);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(30, 144, 255, 0.2);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--background);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-3), var(--accent-4));
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+.popup-footer {
+  padding: 12px 16px;
+  background: var(--background);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.popup-footer small {
+  color: #666;
+  font-size: 11px;
+}
+
+/* --------------------
+   OPTIONS PAGE STYLES
+   -------------------- */
+.options-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.options-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--background);
+}
+
+.options-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+.options-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: var(--foreground);
+  margin-bottom: 6px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-group input,
+.input-group select {
+  padding: 10px 12px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--input-bg);
+  color: var(--foreground);
+  transition: border-color 0.2s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+}
+
+.input-group input[type="number"] {
+  width: 100px;
+}
+
+.unit-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.form-group small {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* --------------------
+   CHECKBOX STYLES
+   -------------------- */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--input-border);
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+  border-color: var(--primary-1);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* --------------------
+   BACKUP HISTORY STYLES
+   -------------------- */
+.backup-history {
+  background: var(--background);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.history-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.history-value {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.form-actions.main-actions {
+  justify-content: center;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 2px solid var(--background);
+}
+
+/* --------------------
+   MESSAGE/NOTIFICATION STYLES
+   -------------------- */
+.message-section {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.message {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.message-success {
+  background: #e6f783;
+  color: #546300;
+  border: 1px solid #bcdd00;
+}
+
+.message-error {
+  background: #ffe0a4;
+  color: #c27d00;
+  border: 1px solid #ffbb3d;
+}
+
+.message-info {
+  background: #e6f783;
+  color: #546300;
+  border: 1px solid #bcdd00;
+}
+
+/* --------------------
+   RESPONSIVE DESIGN
+   -------------------- */
+@media (max-width: 480px) {
+  .popup-container {
+    width: 100%;
+    min-height: auto;
+  }
+  .options-container {
+    margin: 10px;
+    padding: 16px;
+  }
+  .form-actions {
+    flex-direction: column;
+  }
+  .input-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+} 
+
+/* Panels remain neutral */
+.popup-container, .options-container, .tablog-header, .stats-section, .auto-backup-info, .clear-logs-section {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+} 
+

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tab Log - Backup Long-Open Tabs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Add a favicon if desired -->
+  <style>
+    /* Extra styles for the management page */
+    .tablog-header {
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2), var(--primary-3));
+      color: white;
+      padding: 24px 16px 16px 16px;
+      text-align: center;
+      border-radius: 0 0 16px 16px;
+      margin-bottom: 24px;
+    }
+    .tablog-header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .tablog-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 0 8px;
+    }
+    .tablog-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .tablog-table th, .tablog-table td {
+      padding: 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tablog-table th {
+      background: linear-gradient(90deg, var(--primary-1) 0%, var(--primary-2) 100%);
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+    }
+    .tablog-table th.sort-asc::after {
+      content: '▲';
+      position: absolute;
+      right: 8px;
+    }
+    .tablog-table th.sort-desc::after {
+      content: '▼';
+      position: absolute;
+      right: 8px;
+    }
+    .tablog-table tr:hover {
+      background: var(--background);
+    }
+    .tablog-table td a {
+      color: var(--primary-1);
+      text-decoration: underline;
+    }
+    .tablog-export-btn {
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-3), var(--accent-4));
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: background 0.2s;
+    }
+    .tablog-export-btn:hover {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    }
+    .tablog-search {
+      padding: 8px 12px;
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      font-size: 1rem;
+      background: var(--input-bg);
+      color: var(--foreground);
+      min-width: 200px;
+    }
+    .clear-logs-section {
+      margin: 16px 8px;
+      padding: 16px;
+      background: var(--background);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .clear-logs-section h3 {
+      margin-bottom: 12px;
+      color: var(--foreground);
+    }
+    .clear-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .clear-filters input, .clear-filters select {
+      padding: 6px 8px;
+      border: 1px solid var(--input-border);
+      border-radius: 4px;
+      background: var(--input-bg);
+      color: var(--foreground);
+    }
+    .clear-logs-btn {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .clear-logs-btn:hover {
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+    }
+    .log-file-info {
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: var(--surface);
+      border-radius: 4px;
+      border-left: 3px solid var(--primary-1);
+      font-size: 0.9rem;
+      color: var(--foreground);
+    }
+    .favicon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @media (max-width: 600px) {
+      .tablog-header { padding: 16px 4px 8px 4px; }
+      .tablog-controls { flex-direction: column; gap: 8px; }
+      .tablog-table th, .tablog-table td { font-size: 0.95rem; }
+      .clear-filters { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="tablog-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0px 8px 0 8px;">
+    <div style="display: flex; align-items: center; gap: 16px; justify-content: center;">
+      <img src="icons/icon-128.png" alt="Add-on logo" style="width: 48px; height: 48px; border-radius: 12px; box-shadow: 0 2px 8px #0002;">
+      <h1 style="margin: 0;">Backup Long-Open Tabs</h1>
+    </div>
+    <p id="header-caption" style="margin-top: 12px;">This browser extension logs all tabs which stay open for 7+ days. You can review, export, or remove them here.</p>
+  </div>
+
+  <!-- Filter + Back to Popup container -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 24px 8px 0 8px;">
+    <input type="text" id="tablog-search" class="tablog-search" placeholder="Search by title or domain..." style="flex: 1; margin-right: 16px;">
+    <button class="btn btn-grey" id="backToPopupBtn"><span class="gradient-text">Back to Popup</span></button>
+  </div>
+
+  <!-- Action buttons container -->
+  <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 24px; margin: 16px 8px; flex-wrap: wrap; min-height: 220px;">
+    <!-- Backup/Export buttons: Backup Now, Export CSV, Export JSON -->
+    <div class="clear-logs-section" style="flex: 1 1 340px; min-width: 320px; max-width: 640px; margin: 0; display: flex; flex-direction: column; justify-content: flex-end;">
+      <h3>Backup / Export</h3>
+      <p style="margin-bottom: 12px; color: var(--foreground);">
+        * Press "Backup Now" to update the log of long-open tabs now. <br>
+        * Press "Export CSV" to export logged tabs to a CSV file. <br>
+        * Press "Export JSON" to export logged tabs to a JSON file. <br>
+      </p>
+      <div style="margin-top: auto; display: flex; gap: 12px; align-items: center; margin-top: 16px;">
+        <button class="btn btn-green" id="backup-now-btn"><span class="gradient-text">Backup Now</span></button>
+        <button class="btn btn-green" id="export-csv"><span class="gradient-text">Export CSV</span></button>
+        <button class="btn btn-green" id="export-json"><span class="gradient-text">Export JSON</span></button>
+      </div>
+    </div>
+    <!-- Add/Remove buttons -->
+    <div class="clear-logs-section" style="flex: 1 1 340px; min-width: 320px; max-width: 1280px; margin: 0; display: flex; flex-direction: column; justify-content: flex-end;">
+      <h3>Add / Remove Logged Tabs</h3>
+      <p style="margin-bottom: 12px; color: var(--foreground);">
+        <strong>Hint:</strong> <span style="color: var(--primary-1);">Green</span> status boxes - all logged tabs; <span style="color: var(--accent-1);">Yellow</span> status boxes - open but not logged tabs. <br>
+        * Check the status boxes then press "Add / Remove Checked Tabs" to toggle log status. <br>
+        * Press "Remove All Logs" to clear all logs. Additionally you may manually clear the log contents or remove the log file [path to be added].
+      </p>
+      <div style="margin-top: auto; display: flex; gap: 12px; align-items: center; margin-top: 16px;">
+        <button class="btn btn-yellow" id="clear-logs-btn"><span class="gradient-text">Add / Remove Checked Tabs</span></button>
+        <button class="btn btn-yellow" id="remove-all-logs-btn"><span class="gradient-text">Remove All Logs</span></button>
+      </div>
+    </div>
+  </div>
+  
+  <div style="overflow-x:auto; margin: 24px 8px 0 8px;">
+    <table class="tablog-table" id="tablog-table">
+      <thead>
+        <tr>
+          <th data-sort="logged">Status</th>
+          <th data-sort="title">Title</th>
+          <th data-sort="url">Link</th>
+          <th data-sort="createdAt">Opened from</th>
+        </tr>
+      </thead>
+      <tbody id="tabTableBody">
+        <!-- Rows will be populated by JS -->
+      </tbody>
+    </table>
+  </div>
+  
+  <script src="tabs.js"></script>
+</body>
+</html> 
