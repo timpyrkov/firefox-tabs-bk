@@ -1,4 +1,8 @@
-# Backup Long-Open Tabs
+<h1><p align="left">
+  <img src="https://github.com/timpyrkov/firefox-tabs-bk/blob/master/icons/icon-128.png?raw=true" alt="logo" height="60" style="vertical-align: middle; margin-right: 10px;">
+  <span style="font-size:2.5em; vertical-align: middle;"><b>Backup Long-Open Tabs</b></span>
+</p></h1>
+
 
 A Firefox extension to automatically and safely back up tabs that have been open for a long time (default: 7+ days, configurable). Prevent accidental loss of important tabs you want to revisit later.
 
