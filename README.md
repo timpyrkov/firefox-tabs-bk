@@ -1,5 +1,5 @@
 <h1><p align="left">
-  <img src="https://github.com/timpyrkov/firefox-tabs-bk/blob/master/icons/icon-128.png?raw=true" alt="logo" height="60" style="vertical-align: middle; margin-right: 10px;">
+  <img src="https://github.com/timpyrkov/firefox-tabs-bk/blob/master/icons/icon-128.png?raw=true" alt="logo" height="30" style="vertical-align: middle; margin-right: 10px;">
   <span style="font-size:2.5em; vertical-align: middle;"><b>Backup Long-Open Tabs</b></span>
 </p></h1>
 
